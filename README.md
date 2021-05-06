@@ -2,4 +2,4 @@
 
 A little script to push into BDD city with using data gouv address API.
 
-[travels.valentinbabin.fr](travels.valentinbabin.fr)
+[https://valentinbabin.fr/travels/](https://valentinbabin.fr/travels/)
