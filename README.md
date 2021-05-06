@@ -1,5 +1,5 @@
 # maps-travels
 
-A little script to push in BDD city with using dat goouv address API.
+A little script to push into BDD city with using data gouv address API.
 
 [travels.valentinbabin.fr](travels.valentinbabin.fr)
