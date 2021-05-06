@@ -1,4 +1,4 @@
-# maps-travels
+# map-travels
 
 A little script to push into BDD city with using data gouv address API.
 
