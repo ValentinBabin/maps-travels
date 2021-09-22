@@ -65,10 +65,6 @@
       boundsUpdated (bounds) {
         this.bounds = bounds;
       },
-      // async asyncData({ $axios }) {
-      //   const cities = await $axios.$get('https://api.valentinbabin.fr/api_cities/view.php');
-      //   return { cities }
-      // }
     },
     async fetch() {
       const cities = await this.$axios.$get('https://api.valentinbabin.fr/api_cities/view.php')
