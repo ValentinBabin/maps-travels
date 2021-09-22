@@ -141,7 +141,7 @@ maps_app/package-lock.json
 maps_app/node_modules/
 maps_app/.nuxt/
 
-maps_app//logs
+maps_app/logs
 maps_app/*.log
 maps_app/npm-debug.log*
 maps_app/yarn-debug.log*
