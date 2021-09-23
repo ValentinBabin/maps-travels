@@ -17,10 +17,14 @@
       </l-marker>
 
       <!-- Custom -->
-      <l-marker v-for="city in cities" :key="city.id" :lat-lng="latLng(city.lat, city.lng)">
+      <l-marker v-for="city in cities" :key="city.id" :lat-lng="latLng(city.lat, city.lng)" v-on:click="onMarkerClick(city.id, city.name, city.date)">
         <l-icon icon-url="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png" />
       </l-marker>
     </l-map>
+
+    <div v-if="cityId && cityName && cityDate" class="popup h-screen w-1/3">
+      <Popup :id="cityId" :name="cityName" :date="cityDate" />
+    </div>
   </div>
 
 </template>
@@ -43,7 +47,10 @@
         tileSize:512,
         maxZoom:18,
         bounds: null,
-        cities: null
+        cities: null,
+        cityId: null,
+        cityName: null,
+        cityDate: null
       }
     },
     components: {
@@ -65,6 +72,11 @@
       boundsUpdated (bounds) {
         this.bounds = bounds;
       },
+      onMarkerClick: function (id, name, date) {
+        this.cityId=id;
+        this.cityName=name;
+        this.cityDate=date;
+      },
     },
     async fetch() {
       const cities = await this.$axios.$get('https://api.valentinbabin.fr/api_cities/view.php')
@@ -74,7 +86,13 @@
 </script>
 
 <style type="scss" scoped>
-    .map {
-        height: 100vh;
-    }
+  .map {
+    height: 100vh;
+  }
+  .popup {
+    z-index: 500;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 </style>
