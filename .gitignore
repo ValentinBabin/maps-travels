@@ -129,6 +129,7 @@ dmypy.json
 .pyre/
 
 config_bdd.txt
+config_ftp.txt
 favicon.ico
 
 index.*
