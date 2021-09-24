@@ -22,8 +22,9 @@
       </l-marker>
     </l-map>
 
-    <div v-if="cityId && cityName && cityDate" class="popup h-screen w-1/3">
-      <Popup :id="cityId" :name="cityName" :date="cityDate" />
+    <div v-if="cityId && cityName && cityDate" class="popup h-screen w-2/5 overflow-hidden">
+      <p class="absolute my-1 mx-3 select-none cursor-pointer hover:underline text-xs" v-on:click="closePopup()">fermer</p>
+      <Popup :id="cityId" :name="cityName" :date="cityDate" :pictures="picturesTab" />
     </div>
   </div>
 
@@ -42,7 +43,7 @@
         center: L.latLng(45.833619, 1.261105),
         url: 'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoidmFsZW50aWluIiwiYSI6ImNrb2I0MG52bDJ2dnAycGxwNGppNGl6dmgifQ.UiZb90834w5Nx4tM6mly1w',
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',    
-        zoom: 7,
+        zoom: 5,
         iconSize: [25, 41],
         tileSize:512,
         maxZoom:18,
@@ -50,7 +51,8 @@
         cities: null,
         cityId: null,
         cityName: null,
-        cityDate: null
+        cityDate: null,
+        picturesTab: null
       }
     },
     components: {
@@ -72,11 +74,23 @@
       boundsUpdated (bounds) {
         this.bounds = bounds;
       },
-      onMarkerClick: function (id, name, date) {
+      onMarkerClick (id, name, date) {
         this.cityId=id;
         this.cityName=name;
         this.cityDate=date;
+        this.getPictures(id).then( (res)=>{
+          this.picturesTab = res;
+        });
       },
+      closePopup (){
+        this.cityId=null;
+        this.cityName=null;
+        this.cityDate=null;
+        this.picturesTab=null;
+      },
+      async getPictures (id){
+        return await this.$axios.$get(`https://api.valentinbabin.fr/api_cities/view_media.php?id=${id}`);
+      }
     },
     async fetch() {
       const cities = await this.$axios.$get('https://api.valentinbabin.fr/api_cities/view.php')
@@ -94,5 +108,6 @@
     position: absolute;
     top: 0;
     right: 0;
+    height: 100vh;
   }
 </style>

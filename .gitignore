@@ -130,6 +130,8 @@ dmypy.json
 
 config_bdd.txt
 config_ftp.txt
+medias/*
+!medias/.gitkeep
 favicon.ico
 
 index.*
