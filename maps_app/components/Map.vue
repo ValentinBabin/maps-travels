@@ -24,17 +24,30 @@
 
     <div v-if="cityId && cityName && cityDate" class="popup h-screen w-2/5 overflow-hidden">
       <p class="absolute my-1 mx-3 select-none cursor-pointer hover:underline text-xs" v-on:click="closePopup()">fermer</p>
-      <Popup :id="cityId" :name="cityName" :date="cityDate" :pictures="picturesTab" />
+      <Popup :id="cityId" :name="cityName" :date="cityDate" :pictures="picturesTab" @clicked="displaySlider" />
+    </div>
+
+    <div v-if="showSlider" class="sliders-pic absolute left-0 top-0 h-screen">
+      <p class="closing absolute right-0 my-1 mx-3 select-none cursor-pointer hover:underline text-xs" v-on:click="closeSlider()">fermer</p>
+      <VueSlickCarousel ref="carousel" :arrows="true" :dots="true" :slidesToShow="1" :draggable="true" @init="onInitCarousel(indexSlide)">
+        <img v-for="(picture, index) in picturesTab" :key="index" :src="require(`~/assets/${picture.filename}`)" :alt="picture.filename">
+      </VueSlickCarousel>
     </div>
   </div>
 
 </template>
 
 <script>
+  import Vue from 'vue';
   /* eslint-disable no-undef */
   let Vue2Leaflet = {}
   if (process.client)
     Vue2Leaflet = require('vue2-leaflet')
+
+  import VueSlickCarousel from 'vue-slick-carousel';
+  import 'vue-slick-carousel/dist/vue-slick-carousel.css';
+  // import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css';
+
   export default {
     name: "Map",
     props: [],
@@ -52,14 +65,17 @@
         cityId: null,
         cityName: null,
         cityDate: null,
-        picturesTab: null
+        picturesTab: null,
+        showSlider: false,
+        indexSlide:null,
       }
     },
     components: {
       'l-map': Vue2Leaflet.LMap,
       'l-tile-layer': Vue2Leaflet.LTileLayer,
       'l-marker': Vue2Leaflet.LMarker,
-      'l-icon': Vue2Leaflet.LIcon
+      'l-icon': Vue2Leaflet.LIcon,
+      VueSlickCarousel
     }, 
     methods: {
       latLng: function (lat, lng) {
@@ -90,7 +106,23 @@
       },
       async getPictures (id){
         return await this.$axios.$get(`https://api.valentinbabin.fr/api_cities/view_media.php?id=${id}`);
-      }
+      },
+      // Triggered when `childToParent` event is emitted by the child.
+      displaySlider (value) {
+        this.showSlider=value.displaySlider;
+        this.indexSlide=value.index;
+      },
+      closeSlider (){
+        this.showSlider=false;
+      },
+      onInitCarousel(index) {
+        console.log('our carousel is ready')
+        console.log(index);
+        console.log(typeof index);
+        console.log(this.$refs);
+        this.$refs.carousel.goTo(index);
+        // this.$refs.carousel.goTo(`${index}`);
+      },
     },
     async fetch() {
       const cities = await this.$axios.$get('https://api.valentinbabin.fr/api_cities/view.php')
@@ -99,7 +131,7 @@
   }
 </script>
 
-<style type="scss" scoped>
+<style type="scss">
   .map {
     height: 100vh;
   }
@@ -109,5 +141,72 @@
     top: 0;
     right: 0;
     height: 100vh;
+  }
+  .closing{
+    z-index: 1000;
+  }
+  .sliders-pic{
+    z-index: 999;
+    width: 100%;
+    background-color: rgba(209, 213, 219, 0.65);
+  }
+  .slick-slider{
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+  }
+  .slick-list,
+  .slick-track,
+  .slick-slide{
+    width: 100%;
+    height: 100%;
+  }
+  .slick-slide div{
+    width: 100%;
+    height: 100%;
+    padding: 50px 75px 100px 75px;
+  }
+  .slick-slide div img{
+    width: auto !important;
+    height: 100%;
+    display: block !important;
+    margin: 0 auto;
+  }
+
+  .slick-dots{
+    position: absolute;
+    left: 0;
+    bottom: 20px;
+    width: 100%;
+    display: flex !important;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .slick-dots li{
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #6b7280;
+    margin: 0 10px;
+  }
+  .slick-dots li.slick-active{
+    background-color: #1f2937;
+  }
+  .slick-dots li button{
+    display: none;
+  }
+  .slick-prev{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 10px;
+    z-index: 1001;
+  }
+  .slick-next{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    z-index: 1001;
   }
 </style>
