@@ -3,7 +3,18 @@ import os
 import mysql.connector
 import ftplib
 
-def run(id_city):
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+def run():
     # Read bdd file config
     with open('config_bdd.txt') as f:
         datas = f.readlines()
@@ -15,6 +26,9 @@ def run(id_city):
     
     conn = mysql.connector.connect(host=config[0],user=config[1],password=config[2], database=config[1])
     cursor = conn.cursor()
+
+    #Get the choice
+    id_city = choiceMenu(cursor)
 
     # Read ftp file config
     with open('config_ftp.txt') as f:
@@ -30,16 +44,17 @@ def run(id_city):
     for media in os.listdir("medias"):
         row = {
             'filename': media,
-            'id_city': id_city
+            'id_city': id_city,
+            'folder': configFTP[3]
         }
 
         # Insert data in bdd
-        cursor.execute("""INSERT INTO `medias`(`filename`, `path_directory`, `id_city_reference`) VALUES (%(filename)s, '/httpdocs/travels/medias', %(id_city)s)""", row)
+        cursor.execute("""INSERT INTO `medias`(`filename`, `path_directory`, `id_city_reference`) VALUES (%(filename)s, %(folder)s, %(id_city)s)""", row)
 
         # file to send
         file = open( "medias/{}".format(media) ,'rb')
         # send the file          
-        session.storbinary("STOR /httpdocs/travels/medias/{}".format(media), file)     
+        session.storbinary("STOR {}{}".format(configFTP[3], media), file)     
         # close file and FTP
         file.close()
     
@@ -47,6 +62,15 @@ def run(id_city):
     conn.commit()
     conn.close()
 
+def choiceMenu(cursor):
+    print(15*"-", "MENU", 15*"-")
+    cursor.execute("""SELECT  `id`,`name` FROM cities""")
+    records = cursor.fetchall()
+    for row in records:
+        print(bcolors.OKCYAN + row[0] + bcolors.ENDC, " : ", row[1])
+    print(37*"-")
+    choice = input("Enter your id: ")
+    return choice
+
 if __name__ == "__main__":
-    id_city = sys.argv[1]
-    run(id_city)
+    run()
