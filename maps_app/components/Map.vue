@@ -22,7 +22,7 @@
       </l-marker>
     </l-map>
 
-    <div v-if="cityId && cityName && cityDate" class="popup h-screen w-2/5 overflow-hidden">
+    <div v-if="cityId && cityName && cityDate" class="popup h-screen w-full md:w-2/5 overflow-hidden">
       <p class="absolute my-1 mx-3 select-none cursor-pointer hover:underline text-xs" v-on:click="closePopup()">fermer</p>
       <Popup :id="cityId" :name="cityName" :date="cityDate" :pictures="picturesTab" @clicked="displaySlider" />
     </div>
@@ -31,6 +31,16 @@
       <p class="closing absolute right-0 my-1 mx-3 select-none cursor-pointer hover:underline text-xs" v-on:click="closeSlider()">fermer</p>
       <VueSlickCarousel ref="carousel" :arrows="true" :dots="true" :slidesToShow="1" :draggable="true" @init="onInitCarousel(indexSlide)">
         <img v-for="(picture, index) in picturesTab" :key="index" :src="require(`~/assets/${picture.filename}`)" :alt="picture.filename">
+        <template #prevArrow="">
+          <div class="custom-arrow cursor-pointer">
+            <font-awesome-icon icon="arrow-left" />
+          </div>
+        </template>
+        <template #nextArrow="">
+          <div class="custom-arrow cursor-pointer">
+            <font-awesome-icon icon="arrow-right" />
+          </div>
+        </template>
       </VueSlickCarousel>
     </div>
   </div>
@@ -47,6 +57,12 @@
   import VueSlickCarousel from 'vue-slick-carousel';
   import 'vue-slick-carousel/dist/vue-slick-carousel.css';
   // import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css';
+  import { library } from '@fortawesome/fontawesome-svg-core'
+  import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+  library.add(faArrowLeft);
+  library.add(faArrowRight);
 
   export default {
     name: "Map",
@@ -75,7 +91,8 @@
       'l-tile-layer': Vue2Leaflet.LTileLayer,
       'l-marker': Vue2Leaflet.LMarker,
       'l-icon': Vue2Leaflet.LIcon,
-      VueSlickCarousel
+      VueSlickCarousel,
+      'font-awesome-icon': FontAwesomeIcon
     }, 
     methods: {
       latLng: function (lat, lng) {
@@ -116,12 +133,9 @@
         this.showSlider=false;
       },
       onInitCarousel(index) {
-        console.log('our carousel is ready')
-        console.log(index);
-        console.log(typeof index);
-        console.log(this.$refs);
-        this.$refs.carousel.goTo(index);
-        // this.$refs.carousel.goTo(`${index}`);
+        setTimeout(() => {
+          this.$refs.carousel.goTo(index);
+        }, 500);
       },
     },
     async fetch() {
@@ -136,7 +150,7 @@
     height: 100vh;
   }
   .popup {
-    z-index: 500;
+    z-index: 1000;
     position: absolute;
     top: 0;
     right: 0;
@@ -146,7 +160,7 @@
     z-index: 1000;
   }
   .sliders-pic{
-    z-index: 999;
+    z-index: 1001;
     width: 100%;
     background-color: rgba(209, 213, 219, 0.65);
   }
@@ -166,11 +180,25 @@
     height: 100%;
     padding: 50px 75px 100px 75px;
   }
+  @media (max-width: 769px){
+    .slick-slide div{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
   .slick-slide div img{
     width: auto !important;
     height: 100%;
     display: block !important;
     margin: 0 auto;
+  }
+  @media (max-width: 769px){
+    .slick-slide div img{
+      width: 100% !important;
+      height: auto;
+    }
   }
 
   .slick-dots{
