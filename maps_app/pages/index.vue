@@ -32,7 +32,5 @@ export default Vue.extend({})
     position: absolute;
     bottom: 0;
     left: 0;
-    
-    /* padding: 20px; */
   }
 </style>

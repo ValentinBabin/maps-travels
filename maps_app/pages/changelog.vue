@@ -41,6 +41,17 @@ export default {
             "Création WEB API pour récupérer les villes"
           ]
         },
+        {
+          id:2,
+          numVersion:"2.1",
+          date:"septembre 2021",
+          title:"Ajout des photos",
+          description:[
+            "Ajout popup au clic sur la ville",
+            "Ajout images par ville",
+            "Ajout carousel par ville pour les photos"
+          ]
+        },
       ]
     }
   },

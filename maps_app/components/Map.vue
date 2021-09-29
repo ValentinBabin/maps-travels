@@ -29,7 +29,7 @@
 
     <div v-if="showSlider" class="sliders-pic absolute left-0 top-0 h-screen">
       <p class="closing absolute right-0 my-1 mx-3 select-none cursor-pointer hover:underline text-xs" v-on:click="closeSlider()">fermer</p>
-      <VueSlickCarousel ref="carousel" :arrows="true" :dots="true" :slidesToShow="1" :draggable="true" @init="onInitCarousel(indexSlide)">
+      <VueSlickCarousel ref="carousel" :arrows="true" :dots="true" :slidesToShow="1" @init="onInitCarousel(indexSlide)">
         <img v-for="(picture, index) in picturesTab" :key="index" :src="require(`~/assets/${picture.filename}`)" :alt="picture.filename">
         <template #prevArrow="">
           <div class="custom-arrow cursor-pointer">
@@ -95,6 +95,7 @@
       'font-awesome-icon': FontAwesomeIcon
     }, 
     methods: {
+      // Events when map update
       latLng: function (lat, lng) {
         return L.latLng(lat, lng);
       },
@@ -115,22 +116,25 @@
           this.picturesTab = res;
         });
       },
+      // Closing methods
       closePopup (){
         this.cityId=null;
         this.cityName=null;
         this.cityDate=null;
         this.picturesTab=null;
       },
+      closeSlider (){
+        this.showSlider=false;
+      },
+      /**
+       * Get pictures form WEB API
+       */
       async getPictures (id){
         return await this.$axios.$get(`https://api.valentinbabin.fr/api_cities/view_media.php?id=${id}`);
       },
-      // Triggered when `childToParent` event is emitted by the child.
       displaySlider (value) {
         this.showSlider=value.displaySlider;
         this.indexSlide=value.index;
-      },
-      closeSlider (){
-        this.showSlider=false;
       },
       onInitCarousel(index) {
         setTimeout(() => {

@@ -14,10 +14,7 @@
 </template>
 
 <script>
-  import Vue from 'vue';
   import VueSlickCarousel from 'vue-slick-carousel'
-  // optional style for arrows & dots
-  // import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
   
   export default {
     name: "Popup",
@@ -26,10 +23,13 @@
       return {
       }
     },
-    components: { VueSlickCarousel }, 
+    components: { 
+      VueSlickCarousel
+    }, 
     methods: {
-      // Define the method that emits data to the parent as the first parameter to `$emit()`.
-      // This is referenced in the <template> call in the parent. The second parameter is the payload.
+      /**
+       * Emit to parent when picture is clicked
+       */
       emitToParent (event, picture, index) {
         this.$emit('clicked', {
           event: event,
