@@ -72,7 +72,7 @@
         center: L.latLng(45.833619, 1.261105),
         url: 'https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoidmFsZW50aWluIiwiYSI6ImNrb2I0MG52bDJ2dnAycGxwNGppNGl6dmgifQ.UiZb90834w5Nx4tM6mly1w',
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',    
-        zoom: 5,
+        zoom: 7,
         iconSize: [25, 41],
         tileSize:512,
         maxZoom:18,
