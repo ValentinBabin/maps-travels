@@ -143,6 +143,8 @@ maps_app/api_cities/*
 maps_app/package-lock.json
 maps_app/node_modules/
 maps_app/.nuxt/
+maps_app/assets/
+maps_app/static/
 
 maps_app/logs
 maps_app/*.log
