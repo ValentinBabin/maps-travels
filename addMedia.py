@@ -2,6 +2,7 @@ import sys
 import os
 import mysql.connector
 import ftplib
+from shutil import copyfile, copy
 
 class bcolors:
     HEADER = '\033[95m'
@@ -48,13 +49,16 @@ def run():
             'folder': configFTP[3]
         }
 
+        # Copy in assets folders
+        copy("medias/"+media, 'maps_app/assets')
+
         # Insert data in bdd
         cursor.execute("""INSERT INTO `medias`(`filename`, `path_directory`, `id_city_reference`) VALUES (%(filename)s, %(folder)s, %(id_city)s)""", row)
 
         # file to send
         file = open( "medias/{}".format(media) ,'rb')
         # send the file          
-        session.storbinary("STOR {}{}".format(configFTP[3], media), file)     
+        session.storbinary("STOR {}/{}".format(configFTP[3], media), file)     
         # close file and FTP
         file.close()
     

@@ -6,7 +6,9 @@
 
     <p v-if="pictures && pictures.length > 1" class="px-2 pt-6 pb-2">Images :</p>
     <div v-if="pictures && pictures.length > 1" class="wrapper w-full h-5/6 overflow-y-scroll overflow-x-hidden flex flex-row flex-wrap">
-      <img v-for="(picture, index) in pictures" :key="index" :src="'medias/'+picture.filename" :alt="picture.filename" v-on:click="emitToParent($event,picture, index)" class="picture block w-1/2 p-2">
+      <div v-for="(picture, index) in pictures" :key="index" class="w-1/2 p-2 flex items-center">
+        <img :src="'medias/'+picture.filename" :alt="picture.filename" v-on:click="emitToParent($event, index)" class="picture block">
+      </div>
       <!-- <img v-for="(picture, index) in pictures" :key="index" :src="require(`~/assets/${picture.filename}`)" :alt="picture.filename" v-on:click="emitToParent($event,picture, index)" class="picture block w-1/2 p-2"> -->
     </div>
   </section>
@@ -30,11 +32,10 @@
       /**
        * Emit to parent when picture is clicked
        */
-      emitToParent (event, picture, index) {
+      emitToParent (event, index) {
         this.$emit('clicked', {
           event: event,
           displaySlider: true,
-          pictureClicked: picture,
           index: index
         });
       }
