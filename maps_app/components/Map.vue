@@ -30,7 +30,7 @@
     <div v-if="showSlider" class="sliders-pic absolute left-0 top-0 h-screen">
       <p class="closing absolute right-0 my-1 mx-3 select-none cursor-pointer hover:underline text-xs" v-on:click="closeSlider()">fermer</p>
       <VueSlickCarousel ref="carousel" :arrows="true" :dots="true" :slidesToShow="1" @init="onInitCarousel(indexSlide)">
-        <img v-for="(picture, index) in picturesTab" :key="index" :src="require(`~/assets/${picture.filename}`)" :alt="picture.filename">
+        <img v-for="(picture, index) in picturesTab" :key="index" :src="'medias/'+picture.filename" :alt="picture.filename">
         <template #prevArrow="">
           <div class="custom-arrow cursor-pointer">
             <font-awesome-icon icon="arrow-left" />

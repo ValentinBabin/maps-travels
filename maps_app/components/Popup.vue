@@ -4,8 +4,8 @@
     <p v-if="date!==' '" class="w-full text-center pt-6 px-20 text-3xl font-semibold">{{ name }}, {{ date }}</p>
     <p v-else class="w-full text-center pt-6 px-20 text-3xl font-semibold">{{ name }}</p>
 
-    <p v-if="pictures && pictures.length > 1" class="px-2 pt-6 pb-2">Images :</p>
-    <div v-if="pictures && pictures.length > 1" class="wrapper w-full h-5/6 overflow-y-scroll overflow-x-hidden flex flex-row flex-wrap">
+    <p v-if="pictures && pictures.length >= 1" class="px-2 pt-6 pb-2">Images :</p>
+    <div v-if="pictures && pictures.length >= 1" class="wrapper w-full h-5/6 overflow-y-scroll overflow-x-hidden flex flex-row flex-wrap">
       <div v-for="(picture, index) in pictures" :key="index" class="w-1/2 p-2 flex items-center">
         <img :src="'medias/'+picture.filename" :alt="picture.filename" v-on:click="emitToParent($event, index)" class="picture block">
       </div>
