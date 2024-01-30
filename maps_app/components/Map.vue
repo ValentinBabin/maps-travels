@@ -11,10 +11,6 @@
       <l-marker :lat-lng="latLng(45.833619, 1.261105)">
         <l-icon icon-url="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png" />
       </l-marker>
-      <!-- Fleix -->
-      <l-marker :lat-lng="latLng(46.5549, 0.7461)">
-        <l-icon icon-url="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png" />
-      </l-marker>
 
       <!-- Custom -->
       <l-marker v-for="city in cities" :key="city.id" :lat-lng="latLng(city.lat, city.lng)" v-on:click="onMarkerClick(city.id, city.name, city.date)">
